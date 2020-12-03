@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
+</div>
+
+<div>
+    <form method="post">
+        <label>
+            <input type="text" name="description" placeholder="описание">
+        </label>
+        <button type="submit">Добавить</button>
+    </form>
+
+</div>
+
+<table border="1">
+    <tr>
+        <th>id</th>
+        <th>description</th>
+
+    </tr>
+
+    <tr th:each="product : ${products}">
+        <td th:utext="${product.id}">index</td>
+        <td th:utext="${product.description}">count</td>
+    </tr>
+</table>
+</body>
+</html>
