@@ -22,8 +22,8 @@ public class UserService implements UserDetailsService {
     private UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        return userRepository.findByLogin(login);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByUsername(username);
     }
 
     public List<User> findAll() {
@@ -32,7 +32,8 @@ public class UserService implements UserDetailsService {
 
     public void saveUser(User user){
         User updatedUser = userRepository.findById(user.getId()).orElseThrow();
-        updatedUser.setLogin(user.getLogin());
+        System.out.println(user.getPassword());
+        updatedUser.setUsername(user.getUsername());
         updatedUser.setPassword(user.getPassword());
         updatedUser.setFullName(user.getFullName());
         userRepository.save(updatedUser);
@@ -41,21 +42,4 @@ public class UserService implements UserDetailsService {
     public void deleteUser(Long id){
         userRepository.deleteById(id);
     }
-//    public void saveUser(User user, String username, Map<String,String> form){
-//        user.setLogin(username);
-//
-//        Set<String> roles = Arrays.stream(Role.values())
-//                .map(Role::name)
-//                .collect(Collectors.toSet());
-//
-//        user.getRoles().clear();
-//
-//        for (String key : form.keySet()) {
-//            if (roles.contains(key)) {
-//                user.getRoles().add(Role.valueOf(key));
-//            }
-//        }
-//
-//        userRepository.save(user);
-//    }
 }

@@ -15,7 +15,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(unique = true)
-    private String login;
+    private String username;
     private String password;
     @Column(name = "full_name")
     private String fullName;
@@ -29,8 +29,8 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String login, String password, String fullName, boolean active, Set<Role> roles) {
-        this.login = login;
+    public User(String username, String password, String fullName, boolean active, Set<Role> roles) {
+        this.username = username;
         this.password = password;
         this.fullName = fullName;
         this.active = active;
@@ -45,23 +45,18 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-
 
     public String getPassword() {
         return password;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     @Override
     public String getUsername() {
-        return null;
+        return username;
     }
 
     @Override

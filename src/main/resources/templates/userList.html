@@ -17,7 +17,7 @@
         </tr>
 
         <tr th:each="user : ${users}">
-            <td th:utext="${user.login}">login</td>
+            <td th:utext="${user.username}">login</td>
             <td th:utext="${user.fullName}">Full Name</td>
             <td th:utext="${user.active}"> is active </td>
             <td th:utext="${user.roles}"> Role </td>
