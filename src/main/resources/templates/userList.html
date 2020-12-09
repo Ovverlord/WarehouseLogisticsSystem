@@ -4,25 +4,25 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>User List</title>
 </head>
 <body>
 
 <div>
     <table border="1">
         <tr>
-            <th>id</th>
-            <th>description</th>
+            <th>Логин</th>
+            <th>Имя</th>
+            <th>Пароль</th>
+            <th>Роль</th>
 
         </tr>
 
         <tr th:each="user : ${users}">
-            <td th:utext="${user.username}">login</td>
-            <td th:utext="${user.fullName}">Full Name</td>
-            <td th:utext="${user.active}"> is active </td>
-            <td th:utext="${user.roles}"> Role </td>
+            <td th:utext="${user.username}"> </td>
+            <td th:utext="${user.fullName}"></td>
+            <td th:utext="${user.roles}"></td>
             <td><a th:href="'/user/' + ${user.id}+'/edit'">Edit</a> </td>
-
         </tr>
     </table>
 </div>

@@ -3,7 +3,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Products list</title>
 </head>
 <body>
 <div>
@@ -15,24 +15,18 @@
 <div>
     <table border="1">
         <tr>
-            <th>code</th>
             <th>description</th>
             <th>quantity</th>
         </tr>
 
         <tr th:each="product : ${products}">
-            <td th:utext="${product.code}">count</td>
-            <td th:utext="${product.description}">count</td>
-            <td th:utext="${product.quantity}">count</td>
-            <td><a th:href="${product.id}+'/edit'">Edit</a> </td>
+            <td th:utext="${product.description}">Описание</td>
+            <td th:utext="${product.quantity}">Количество</td>
+            <td><a th:href="'/product/'+${product.id}+'/edit'">Редактировать</a></td>
         </tr>
     </table>
 
-    <form action="/addProduct" method="post">
-        <label>
-            <input type="text" name="description" placeholder="описание">
-        </label>
-        <button type="submit">Добавить</button>
-    </form>
+
+    <a href="/addProduct">Добавить продукт</a>
 
 </div>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>productEdit</title>
+</head>
+<body>
+<div>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
+</div>
+
+<div>
+
+    <form th:action="'/product/edit'" method="post">
+
+        <input type="hidden" th:value="${product.id}" name="id">
+        <div><label> User Name :<input type="text" th:value="${product.description}" name="description"></label></div>
+        <button type="submit">Сохранить изменения</button>
+    </form>
+
+    <form th:action="'/user/remove'" method="post">
+
+        <button class="btn btn-danger" type="submit">Удалить продукт</button>
+    </form>
+
+</div>
+
+</body>
+</html>

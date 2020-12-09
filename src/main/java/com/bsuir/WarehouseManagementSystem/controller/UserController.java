@@ -21,14 +21,12 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     public String userList(Model model){
         model.addAttribute("users",userService.findAll());
         return "userList";
     }
-
 
 
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -67,7 +65,6 @@ public class UserController {
     public String updateProfile(@AuthenticationPrincipal User user,
                                 @ModelAttribute User updatedUser,
                                 BindingResult bindingResult){
-
 
         userService.saveUser(updatedUser);
         return "main";
