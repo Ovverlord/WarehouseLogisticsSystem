@@ -32,7 +32,6 @@ public class UserService implements UserDetailsService {
 
     public void saveUser(User user){
         User updatedUser = userRepository.findById(user.getId()).orElseThrow();
-        System.out.println(user.getPassword());
         updatedUser.setUsername(user.getUsername());
         updatedUser.setPassword(user.getPassword());
         updatedUser.setFullName(user.getFullName());

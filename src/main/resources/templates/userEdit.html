@@ -20,9 +20,9 @@
 
     <form th:action="'/user/'+  ${user.id} +'/edit'" method="post">
 
-        <div><label> User Name :<input type="text" name="username"></label></div>
-        <div><label> password :<input type="text" name="password" ></label></div>
-        <div><label> full name :<input type="text" name="fullName" ></label></div>
+        <div><label> User Name :<input type="text" th:value="${user.username}" name="username"></label></div>
+        <div><label> password :<input type="text" th:value="${user.password}" name="password" ></label></div>
+        <div><label> full name :<input type="text" th:value="${user.fullName}" name="fullName" ></label></div>
         <button type="submit">Save</button>
     </form>
 

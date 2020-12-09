@@ -18,12 +18,12 @@
         Invalid username and password.
     </div>
 
-    <form th:action="'/user/' + ${user.username} + '/update'" method="post">
+    <form th:action="'/user/update'" method="post">
 
         <input type="hidden" th:value="${user.id}" name="id">
-        <div><label> User Name :<input type="text" name="username"></label></div>
-        <div><label> password :<input type="text" name="password" ></label></div>
-        <div><label> full name :<input type="text" name="fullName" ></label></div>
+        <div><label> User Name :<input type="text" th:value="${user.username}" name="username"></label></div>
+        <div><label> password :<input type="text" th:value="${user.password}" name="password" ></label></div>
+        <div><label> full name :<input type="text" th:value="${user.fullName}" name="fullName" ></label></div>
         <button type="submit">Update</button>
     </form>
 

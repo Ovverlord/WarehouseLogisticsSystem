@@ -22,18 +22,7 @@
 
 </div>
 
-<table border="1">
-    <tr>
-        <th>id</th>
-        <th>description</th>
-    </tr>
-
-    <tr th:each="product : ${products}">
-        <td th:utext="${product.id}">index</td>
-        <td th:utext="${product.description}">count</td>
-    </tr>
-</table>
-
 <a href="/user">User List</a>
+<a href="/checkman/create">Create checkman</a>
 </body>
 </html>

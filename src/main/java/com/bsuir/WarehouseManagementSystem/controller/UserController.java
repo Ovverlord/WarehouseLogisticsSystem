@@ -1,6 +1,8 @@
 package com.bsuir.WarehouseManagementSystem.controller;
 
+import com.bsuir.WarehouseManagementSystem.model.Role;
 import com.bsuir.WarehouseManagementSystem.model.User;
+import com.bsuir.WarehouseManagementSystem.repository.UserRepository;
 import com.bsuir.WarehouseManagementSystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -10,11 +12,15 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+import java.util.Map;
+
 @Controller
 @RequestMapping("/user")
 public class UserController {
     @Autowired
     private UserService userService;
+
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
@@ -22,6 +28,8 @@ public class UserController {
         model.addAttribute("users",userService.findAll());
         return "userList";
     }
+
+
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("{user}/edit")
@@ -47,23 +55,21 @@ public class UserController {
         return "redirect:/user";
     }
 
-    @GetMapping("/{username}/update")
+    @GetMapping("/update")
     public String getProfile(Model model,
-                             @PathVariable(value = "username") String username,
                              @AuthenticationPrincipal User user){
         model.addAttribute("user",user);
 
         return "profile";
     }
 
-    @PostMapping("/{username}/update")
-    public String updateProfile(@PathVariable(value = "username") String username,
-                                @AuthenticationPrincipal User user,
+    @PostMapping("/update")
+    public String updateProfile(@AuthenticationPrincipal User user,
                                 @ModelAttribute User updatedUser,
                                 BindingResult bindingResult){
 
 
         userService.saveUser(updatedUser);
-        return "redirect:/user/{username}";
+        return "main";
     }
 }

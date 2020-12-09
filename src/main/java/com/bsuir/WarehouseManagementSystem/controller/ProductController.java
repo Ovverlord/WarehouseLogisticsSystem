@@ -3,6 +3,10 @@ package com.bsuir.WarehouseManagementSystem.controller;
 import com.bsuir.WarehouseManagementSystem.model.Product;
 import com.bsuir.WarehouseManagementSystem.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,24 +20,22 @@ public class ProductController {
     @Autowired
     ProductRepository productRepository;
 
-    @GetMapping("/")
-    public String main(Map<String,Object> model){
+    @PreAuthorize("hasAuthority('CHECKMAN')")
+    @GetMapping("/getProducts")
+    public String getProducts(Map<String,Object> model){
 
         Iterable<Product> products = productRepository.findAll();
         model.put("products",products);
 
-        return "main";
+        return "productsList";
     }
 
-    @PostMapping("/")
-    public String add(@RequestParam String description, Map<String,Object> model){
+    @PreAuthorize("hasAuthority('CHECKMAN')")
+    @PostMapping("/addProduct")
+    public String addProducts(Product product, Map<String,Object> model){
 
-        Product product = new Product(description);
         productRepository.save(product);
 
-        Iterable<Product> products = productRepository.findAll();
-        model.put("products",products);
-
-        return "main";
+        return "productsList";
     }
 }
