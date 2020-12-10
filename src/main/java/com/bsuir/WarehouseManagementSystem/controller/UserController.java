@@ -48,8 +48,8 @@ public class UserController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("{id}/remove")
-    public String deleteUser(@PathVariable(value = "id") Long id){
-        userService.deleteUser(id);
+    public String removeUser(@PathVariable(value = "id") Long id){
+        userService.removeUser(id);
         return "redirect:/user";
     }
 

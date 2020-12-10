@@ -56,9 +56,17 @@ public class ProductController {
 
     @PreAuthorize("hasAuthority('CHECKMAN')")
     @PostMapping("/product/edit")
-    public String updateProfile(@ModelAttribute Product product,BindingResult bindingResult){
-        
+    public String updateProduct(@ModelAttribute Product product,BindingResult bindingResult){
+
         productService.editProduct(product);
+        return "redirect:/getProducts";
+    }
+
+    @PreAuthorize("hasAuthority('CHECKMAN')")
+    @PostMapping("/product/{id}/remove")
+    public String removeProduct(@PathVariable(value = "id") Long id)
+    {
+        productService.removeProduct(id);
         return "redirect:/getProducts";
     }
 }
