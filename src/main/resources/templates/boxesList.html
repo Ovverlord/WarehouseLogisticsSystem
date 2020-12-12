@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Boxes list</title>
+</head>
+<body>
+<div>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
+</div>
+
+<div>
+    <table border="1">
+        <tr>
+            <th>Код коробки</th>
+            <th>Вместимость</th>
+            <th>Заполненность</th>
+            <th>Код ячейки</th>
+            <th>Продукт</th>
+        </tr>
+
+        <tr th:each="box : ${boxes}">
+            <td th:utext="${box.id}">Код коробки</td>
+            <td th:utext="${box.capacity}">Вместимость</td>
+            <td th:utext="${box.fullness}">Заполненность</td>
+            <td th:utext="${box.position.code}">Код ячейки</td>
+            <td th:utext="${box.product.description}">Продукт</td>
+        </tr>
+    </table>
+</div>

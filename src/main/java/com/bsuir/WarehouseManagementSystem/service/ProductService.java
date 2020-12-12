@@ -28,8 +28,10 @@ public class ProductService {
     @Autowired
     private PositionRepository positionRepository;
 
-    public List<Product> findAll() {
-        return productRepository.findAll();
+    public List<Product> findAll(){return productRepository.getAllProducts();}
+
+    public List<Product> getAllProducts(){
+        return productRepository.getAllProducts();
     }
 
     public void save(Product product){
@@ -111,11 +113,6 @@ public class ProductService {
 
     public void productsPlacement(Integer productsForNewBoxesQuantity,Long productId){
         Double requiredBoxesQuantity = Math.ceil((double)productsForNewBoxesQuantity/boxRepository.getBoxCapacity());
-        Integer availableBoxesQuantity = positionRepository.getTotalCapacity() - positionRepository.getTotalFullness();
-
-//        System.out.println("productService required boxes");
-//        System.out.println(requiredBoxesQuantity);
-
 
         for(int i=0; i < requiredBoxesQuantity; i++){
             createAndPlaceBox(productId,productsForNewBoxesQuantity);

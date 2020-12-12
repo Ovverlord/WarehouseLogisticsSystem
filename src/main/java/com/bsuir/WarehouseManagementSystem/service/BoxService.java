@@ -12,7 +12,11 @@ public class BoxService {
     @Autowired
     private BoxRepository boxRepository;
 
+    public List<Box> getAllBoxes(){return boxRepository.getAllBoxes();}
+
     public List<Box> findAll() {
         return boxRepository.findAll();
     }
+
+
 }

@@ -11,4 +11,7 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends CrudRepository<Product, Long> {
     List<Product> findAll();
+
+//    @Query(value = "SELECT SUM(fullness) FROM Boxes JOIN products ON products.id = boxes.product_id GROUP BY product_id",nativeQuery = true)
+//    List<Product> getAllProducts();
 }

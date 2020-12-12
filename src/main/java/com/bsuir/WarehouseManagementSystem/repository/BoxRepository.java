@@ -12,6 +12,9 @@ public interface BoxRepository extends CrudRepository<Box, Long> {
     List<Box> findAll();
     Box getBoxById(Long id);
 
+    @Query(value = "SELECT * FROM Boxes JOIN products ON products.id = boxes.product_id",nativeQuery = true)
+    List<Box> getAllBoxes();
+
     @Query(value = "SELECT position_id AS positionId, COUNT(position_id) AS boxesAmount FROM Boxes WHERE product_id = :product_id GROUP BY position_id", nativeQuery = true)
     List<BoxGetters> getBoxesAndPositionId(@Param("product_id") Long productId);
 
