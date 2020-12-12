@@ -13,8 +13,6 @@ public class Map {
     private Integer rowsAmount;
     @Column(name = "columns_amount")
     private Integer columnsAmount;
-    @Column(name = "floors_amount")
-    private Integer floorsAmount;
 
     public Map() {
     }
@@ -41,13 +39,5 @@ public class Map {
 
     public void setColumnsAmount(Integer columnsAmount) {
         this.columnsAmount = columnsAmount;
-    }
-
-    public Integer getFloorsAmount() {
-        return floorsAmount;
-    }
-
-    public void setFloorsAmount(Integer floorsAmount) {
-        this.floorsAmount = floorsAmount;
     }
 }

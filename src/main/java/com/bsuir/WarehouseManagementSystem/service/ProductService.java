@@ -10,12 +10,11 @@ import com.bsuir.WarehouseManagementSystem.repository.PositionRepository;
 import com.bsuir.WarehouseManagementSystem.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 @Service
 public class ProductService {
@@ -34,7 +33,6 @@ public class ProductService {
     }
 
     public void save(Product product){
-        product.setQuantity(0);
         productRepository.save(product);
     }
 
@@ -45,9 +43,9 @@ public class ProductService {
     }
 
 
-    public void removeProduct(Long id){
+    public void removeProduct(Long productId){
 
-        List<BoxGetters> list = boxRepository.getBoxesAndPositionId(id);
+        List<BoxGetters> list = boxRepository.getBoxesAndPositionId(productId);
 
         Map<Long,Integer> map = new HashMap<>();
         for(BoxGetters obj : list){
@@ -56,16 +54,107 @@ public class ProductService {
 
         for (Map.Entry<Long, Integer> entry : map.entrySet()) {
             reducePositionFullness(entry.getKey(),entry.getValue());
-            System.out.println("ID позиции =  " + entry.getKey() + " КОличество коробок = " + entry.getValue());
         }
 
-        productRepository.deleteById(id);
+        productRepository.deleteById(productId);
     }
 
-    void reducePositionFullness(Long id,Integer amount){
-        Position position = positionRepository.findById(id).orElseThrow();
+    public void reducePositionFullness(Long positionId,Integer amount){
+        Position position = positionRepository.findById(positionId).orElseThrow();
         position.setFullness(position.getFullness() - amount);
 
         positionRepository.save(position);
+    }
+
+
+
+    public void acceptProduct(Long productId,Integer receivedProductsQuantity){
+
+        List<BoxGetters> uncompletedBoxesIdList = boxRepository.getUncompletedBoxesByProductId(productId);
+
+        if(uncompletedBoxesIdList.size() > 0){
+            Integer uncompletedPlacesInBoxesAmount = boxRepository.getUncompletedPlacesInBoxesAmount(productId);
+
+            if(receivedProductsQuantity > uncompletedPlacesInBoxesAmount){
+                Integer productsForNewBoxesQuantity = receivedProductsQuantity - uncompletedPlacesInBoxesAmount;
+                receivedProductsQuantity = receivedProductsQuantity - productsForNewBoxesQuantity;
+
+                productsPlacement(productsForNewBoxesQuantity,productId);
+            }
+
+            productsPlacement(uncompletedBoxesIdList,receivedProductsQuantity);
+        }
+
+        else{
+            productsPlacement(receivedProductsQuantity,productId);
+        }
+    }
+
+    public void productsPlacement(List<BoxGetters> uncompletedBoxesIdList,
+                                  Integer receivedProductsQuantity){
+
+        for(BoxGetters obj : uncompletedBoxesIdList){
+
+            Box box = boxRepository.getBoxById(obj.getBoxId());
+
+            if(receivedProductsQuantity <= box.getCapacity() - box.getFullness()){
+                box.setFullness(box.getFullness() + receivedProductsQuantity);
+            }
+            else{
+                receivedProductsQuantity = receivedProductsQuantity - (box.getCapacity() - box.getFullness());
+                box.setFullness(box.getCapacity());
+            }
+
+            boxRepository.save(box);
+        }
+    }
+
+    public void productsPlacement(Integer productsForNewBoxesQuantity,Long productId){
+        Double requiredBoxesQuantity = Math.ceil((double)productsForNewBoxesQuantity/boxRepository.getBoxCapacity());
+        Integer availableBoxesQuantity = positionRepository.getTotalCapacity() - positionRepository.getTotalFullness();
+
+//        System.out.println("productService required boxes");
+//        System.out.println(requiredBoxesQuantity);
+
+
+        for(int i=0; i < requiredBoxesQuantity; i++){
+            createAndPlaceBox(productId,productsForNewBoxesQuantity);
+            productsForNewBoxesQuantity = productsForNewBoxesQuantity - boxRepository.getBoxCapacity();
+        }
+
+    }
+
+    public void createAndPlaceBox(Long productId,Integer productsForNewBoxesQuantity){
+        List<Long> positionIdList = positionRepository.getUncompletedPositionId();
+
+        if(positionIdList.size() > 0){
+            Long positionId = positionIdList.get(0);
+
+            Position position = positionRepository.findById(positionId).orElseThrow();
+            Product product = productRepository.findById(productId).orElseThrow();
+
+            if(productsForNewBoxesQuantity <= boxRepository.getBoxCapacity()){
+                Box box = new Box(productsForNewBoxesQuantity,
+                        boxRepository.getBoxCapacity(),
+                        position,product);
+
+                boxRepository.save(box);
+            }
+
+            else{
+                Box box = new Box(boxRepository.getBoxCapacity(),
+                        boxRepository.getBoxCapacity(),
+                        position,product);
+
+                boxRepository.save(box);
+            }
+
+            position.setFullness(position.getFullness()+1);
+            positionRepository.save(position);
+        }
+
+//        else{
+//            System.out.println("net mesta");
+//        }
     }
 }

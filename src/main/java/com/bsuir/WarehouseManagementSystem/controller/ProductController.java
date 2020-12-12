@@ -9,11 +9,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -67,6 +65,25 @@ public class ProductController {
     public String removeProduct(@PathVariable(value = "id") Long id)
     {
         productService.removeProduct(id);
+        return "redirect:/getProducts";
+    }
+
+    @PreAuthorize("hasAuthority('CHECKMAN')")
+    @GetMapping("/acceptance")
+    public String acceptance(Model model){
+
+        List<Product> products = productService.findAll();
+        model.addAttribute("products",products);
+        return "acceptance";
+    }
+
+    @PreAuthorize("hasAuthority('CHECKMAN')")
+    @PostMapping("/acceptance")
+    public String acceptance(@RequestParam String selectId,
+                             @RequestParam Integer quantity){
+
+        productService.acceptProduct(Long.valueOf(selectId),quantity);
+
         return "redirect:/getProducts";
     }
 }

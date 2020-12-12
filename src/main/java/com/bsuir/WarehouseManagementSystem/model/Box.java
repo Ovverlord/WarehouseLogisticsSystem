@@ -27,6 +27,17 @@ public class Box {
     public Box() {
     }
 
+    public Box(Integer fullness, Integer capacity) {
+        this.fullness = fullness;
+        this.capacity = capacity;
+    }
+
+    public Box(Integer fullness, Integer capacity, Position position, Product product) {
+        this.fullness = fullness;
+        this.capacity = capacity;
+        this.position = position;
+        this.product = product;
+    }
 
     public Box(Integer fullness, Integer capacity, Position position) {
         this.fullness = fullness;

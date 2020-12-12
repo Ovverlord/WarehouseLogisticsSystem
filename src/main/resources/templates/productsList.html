@@ -21,12 +21,13 @@
 
         <tr th:each="product : ${products}">
             <td th:utext="${product.description}">Описание</td>
-            <td th:utext="${product.quantity}">Количество</td>
             <td><a th:href="'/product/'+${product.id}+'/edit'">Редактировать</a></td>
         </tr>
     </table>
 
 
-    <a href="/addProduct">Добавить продукт</a>
+    <a href="/addProduct">Обновить номенклатуру</a>
+
+    <a href="/acceptance">Приемка и размещение</a>
 
 </div>
