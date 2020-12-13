@@ -12,12 +12,11 @@ import java.util.List;
 public interface PositionRepository extends CrudRepository<Position, Long> {
     Long getPositionById(Long id);
 
-    @Query(value = "SELECT SUM(capacity) FROM Boxes",nativeQuery = true)
-    Integer getTotalCapacity();
 
-    @Query(value = "SELECT SUM(fullness) FROM Boxes",nativeQuery = true)
-    Integer getTotalFullness();
 
-    @Query(nativeQuery = true,value = "SELECT id FROM positions WHERE fullness!=capacity ORDER BY fullness DESC, id ASC")
+    @Query(nativeQuery = true,value = "SELECT id FROM Positions WHERE fullness!=capacity ORDER BY fullness DESC, id ASC")
     List<Long> getUncompletedPositionId();
+
+//    @Query(value = "UPDATE Positions SET capacity = :capacity",nativeQuery = true)
+//    void updatePositionCapacity(@Param("capacity") Integer capacity);
 }

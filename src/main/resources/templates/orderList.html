@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>User List</title>
+</head>
+<body>
+
+<div>
+    <table border="1">
+        <tr>
+            <th>Продукт</th>
+            <th>Количество</th>
+            <th>Адрес</th>
+            <th>Статус</th>
+            <th>Пользователь</th>
+
+        </tr>
+
+        <tr th:each="order : ${orders}">
+            <td th:utext="${order.product.description}"> </td>
+            <td th:utext="${order.quantity}"></td>
+            <td th:utext="${order.address}"></td>
+            <td th:utext="${order.status}"></td>
+            <td th:utext="${order.user.fullName}"></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

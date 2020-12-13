@@ -28,10 +28,21 @@ public class ProductService {
     @Autowired
     private PositionRepository positionRepository;
 
-    public List<Product> findAll(){return productRepository.getAllProducts();}
+    @Autowired
+    private PositionService positionService;
 
-    public List<Product> getAllProducts(){
-        return productRepository.getAllProducts();
+    public List<Product> findAll(){return productRepository.findAll();}
+
+    public Product getProductById(Long productId){
+        return productRepository.findById(productId).orElseThrow();
+    }
+
+//    public List<Product> getAllProducts(){
+//        return productRepository.getAllProducts();
+//    }
+
+    public Integer getProductsQuantity(Long productId){
+        return productRepository.getProductsQuantity(productId);
     }
 
     public void save(Product product){
@@ -55,18 +66,14 @@ public class ProductService {
         }
 
         for (Map.Entry<Long, Integer> entry : map.entrySet()) {
-            reducePositionFullness(entry.getKey(),entry.getValue());
+
+            positionService.reducePositionFullness(entry.getKey(),entry.getValue());
+            //reducePositionFullness(entry.getKey(),entry.getValue());
         }
 
         productRepository.deleteById(productId);
     }
 
-    public void reducePositionFullness(Long positionId,Integer amount){
-        Position position = positionRepository.findById(positionId).orElseThrow();
-        position.setFullness(position.getFullness() - amount);
-
-        positionRepository.save(position);
-    }
 
 
 
@@ -153,5 +160,27 @@ public class ProductService {
 //        else{
 //            System.out.println("net mesta");
 //        }
+    }
+
+
+    public void productsSelect(Long productId,Integer quantity){
+        List<Box> boxesList = boxRepository.getBoxIdByProduct(productId);
+
+        for(Box box : boxesList){
+            if(quantity>0){
+                if(box.getFullness() <= quantity){
+                    quantity = quantity - box.getFullness();
+                    Long positionId = box.getPosition().getId();
+                    positionService.reducePositionFullness(positionId,1);
+                    boxRepository.deleteById(box.getId());
+                }
+                else{
+                    box.setFullness(box.getFullness()-quantity);
+                    boxRepository.save(box);
+                    quantity = 0;
+                }
+            }
+
+        }
     }
 }

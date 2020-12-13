@@ -14,4 +14,7 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 
 //    @Query(value = "SELECT SUM(fullness) FROM Boxes JOIN products ON products.id = boxes.product_id GROUP BY product_id",nativeQuery = true)
 //    List<Product> getAllProducts();
+
+    @Query(value = "SELECT SUM(fullness) FROM Boxes where product_id = :product_id",nativeQuery = true)
+    Integer getProductsQuantity(@Param(value = "product_id") Long product_id);
 }

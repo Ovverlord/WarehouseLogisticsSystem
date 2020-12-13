@@ -25,6 +25,6 @@ public class MainController {
             return "redirect:/getProducts";
         }
 
-        return "main";
+        return "userOrdersList";
     }
 }

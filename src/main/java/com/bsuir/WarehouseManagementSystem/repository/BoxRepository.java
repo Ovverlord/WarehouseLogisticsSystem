@@ -24,7 +24,19 @@ public interface BoxRepository extends CrudRepository<Box, Long> {
     @Query(value = "SELECT SUM(capacity) - SUM(fullness) FROM Boxes WHERE product_id = :product_id AND fullness!=capacity",nativeQuery = true)
     Integer getUncompletedPlacesInBoxesAmount(@Param("product_id") Long productId);
 
+    @Query(value="SELECT * FROM Boxes where product_id = :product_id",nativeQuery = true)
+    List<Box> getBoxIdByProduct(@Param("product_id") Long product_id);
+
+    @Query(value = "SELECT SUM(capacity) FROM Boxes",nativeQuery = true)
+    Integer getTotalCapacity();
+
+    @Query(value = "SELECT SUM(fullness) FROM Boxes",nativeQuery = true)
+    Integer getTotalFullness();
+
     @Query(value = "SELECT capacity FROM Boxes GROUP BY capacity",nativeQuery = true)
     Integer getBoxCapacity();
+
+//    @Query(value = "UPDATE Boxes SET capacity = :capacity",nativeQuery = true)
+//    void updateBoxCapacity(@Param("capacity") Integer capacity);
 
 }

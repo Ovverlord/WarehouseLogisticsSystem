@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>User List</title>
+</head>
+<body>
+
+<div>
+    <table border="1">
+        <tr>
+            <td>Код</td>
+            <th>Продукт</th>
+            <th>Количество</th>
+            <th>Адрес</th>
+            <th>Пользователь</th>
+
+        </tr>
+
+        <tr th:each="order : ${orders}">
+            <td th:utext="${order.id}"> </td>
+            <td th:utext="${order.product.description}"> </td>
+            <td th:utext="${order.quantity}"></td>
+            <td th:utext="${order.address}"></td>
+            <td th:utext="${order.user.fullName}"></td>
+            <td th:utext="${order.user.fullName}"></td>
+            <td>
+                <form action="/order/confirm" method="post">
+                    <input type="hidden" name="orderId" th:value="${order.id}">
+                    <button type="submit">Подтвердить</button>
+                </form>
+            </td>
+
+            <td>
+                <form action="/order/decline" method="post">
+                    <input type="hidden" name="orderId" th:value="${order.id}">
+                    <button type="submit">Отклонить</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+
+
+
+
+</div>
+</body>
+</html>
