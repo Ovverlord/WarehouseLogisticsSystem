@@ -2,6 +2,8 @@ package com.bsuir.WarehouseManagementSystem.controller;
 
 import com.bsuir.WarehouseManagementSystem.model.Product;
 import com.bsuir.WarehouseManagementSystem.model.User;
+import com.bsuir.WarehouseManagementSystem.repository.BoxGetters;
+import com.bsuir.WarehouseManagementSystem.repository.ProductGetters;
 import com.bsuir.WarehouseManagementSystem.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,8 +13,11 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 public class ProductController {
@@ -24,8 +29,16 @@ public class ProductController {
     @GetMapping("/getProducts")
     public String getProducts(Model model){
 
-        //model.addAttribute("products",productService.getAllProducts());
-        model.addAttribute("products",productService.findAll());
+        List<ProductGetters> productsList = productService.getAllProducts();
+
+        HashMap<Integer,String> productsMap = new HashMap<>();
+
+        for(ProductGetters obj : productsList){
+            Product product = productService.getProductById(obj.getProductId());
+            productsMap.put(obj.getQuantity(),product.getDescription());
+        }
+
+        model.addAttribute("products",productsMap);
 
         return "productsList";
     }
@@ -47,8 +60,10 @@ public class ProductController {
 
 
     @PreAuthorize("hasAuthority('CHECKMAN')")
-    @GetMapping("/product/{product}/edit")
-    public String userEditForm(@PathVariable Product product, Model model){
+    @GetMapping("/product/{description}/edit")
+    public String userEditForm(@PathVariable String description, Model model){
+
+        Product product = productService.getByDescription(description);
         model.addAttribute("product",product);
         return "editProduct";
     }

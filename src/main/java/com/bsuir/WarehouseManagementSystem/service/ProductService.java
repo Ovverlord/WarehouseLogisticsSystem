@@ -4,10 +4,7 @@ package com.bsuir.WarehouseManagementSystem.service;
 import com.bsuir.WarehouseManagementSystem.model.Box;
 import com.bsuir.WarehouseManagementSystem.model.Position;
 import com.bsuir.WarehouseManagementSystem.model.Product;
-import com.bsuir.WarehouseManagementSystem.repository.BoxGetters;
-import com.bsuir.WarehouseManagementSystem.repository.BoxRepository;
-import com.bsuir.WarehouseManagementSystem.repository.PositionRepository;
-import com.bsuir.WarehouseManagementSystem.repository.ProductRepository;
+import com.bsuir.WarehouseManagementSystem.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,15 +28,19 @@ public class ProductService {
     @Autowired
     private PositionService positionService;
 
+    public Product getByDescription(String description){
+        return productRepository.getByDescription(description);
+    }
+
     public List<Product> findAll(){return productRepository.findAll();}
 
     public Product getProductById(Long productId){
         return productRepository.findById(productId).orElseThrow();
     }
 
-//    public List<Product> getAllProducts(){
-//        return productRepository.getAllProducts();
-//    }
+    public List<ProductGetters> getAllProducts(){
+        return productRepository.getAllProducts();
+    }
 
     public Integer getProductsQuantity(Long productId){
         return productRepository.getProductsQuantity(productId);

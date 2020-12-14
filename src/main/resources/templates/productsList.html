@@ -18,15 +18,17 @@
             <tr>
             <tr>
                 <th>Описание</th>
-                <th>quantity</th>
+                <th>Количество</th>
+                <th>Редактирование</th>
             </tr>
             </tr>
             </thead>
             <tbody>
             <tr>
             <tr th:each="product : ${products}">
-                <td th:utext="${product.description}">Описание</td>
-                <td><a th:href="'/product/'+${product.id}+'/edit'">Редактировать</a></td>
+                <td th:utext="${product.getValue}">Описание</td>
+                <td th:utext="${product.getKey}">Количество</td>
+                <td><a th:href="'/product/'+${product.getValue()}+'/edit'">Редактировать</a></td>
             </tr>
             </tr>
             </tbody>

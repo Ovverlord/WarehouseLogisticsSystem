@@ -12,8 +12,10 @@ import java.util.List;
 public interface ProductRepository extends CrudRepository<Product, Long> {
     List<Product> findAll();
 
-//    @Query(value = "SELECT SUM(fullness) FROM Boxes JOIN products ON products.id = boxes.product_id GROUP BY product_id",nativeQuery = true)
-//    List<Product> getAllProducts();
+    Product getByDescription(String description);
+
+    @Query(value = "SELECT SUM(fullness) as quantity,product_id as productId FROM Boxes JOIN products ON products.id = boxes.product_id GROUP BY product_id",nativeQuery = true)
+    List<ProductGetters> getAllProducts();
 
     @Query(value = "SELECT SUM(fullness) FROM Boxes where product_id = :product_id",nativeQuery = true)
     Integer getProductsQuantity(@Param(value = "product_id") Long product_id);

@@ -139,15 +139,4 @@ public class OrderController {
 
         return "orderList";
     }
-
-//    @PreAuthorize("hasAuthority('USER')")
-//    @GetMapping("/order/{id}/edit")
-//    public String editOrders(@AuthenticationPrincipal User user,
-//                             @PathVariable(value = "id") Long orderId,
-//                            Model model){
-//
-//        Order order = orderService.getOrderById(orderId);
-//        model.addAttribute("order",order);
-//        return "ordersList";
-//    }
 }
