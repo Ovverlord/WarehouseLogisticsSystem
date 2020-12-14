@@ -11,7 +11,6 @@ public class Box {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Integer code;
     private Integer fullness;
     private Integer capacity;
 
@@ -51,14 +50,6 @@ public class Box {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Integer getCode() {
-        return code;
-    }
-
-    public void setCode(Integer code) {
-        this.code = code;
     }
 
     public Integer getFullness() {

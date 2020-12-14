@@ -31,7 +31,7 @@ public class OrderService {
         orderRepository.save(order);
     }
 
-    public Order getById(Long orderId){
+    public Order findById(Long orderId){
         return orderRepository.findById(orderId).orElseThrow();
     }
 
@@ -39,7 +39,7 @@ public class OrderService {
         return orderRepository.getOrders(userId);
     }
 
-    public List<Order> findAll(){
+    public List<Order> getAll(){
         return (List<Order>) orderRepository.findAll();
     }
 
@@ -53,9 +53,5 @@ public class OrderService {
 
     public void removeOrder(Long orderId){
         orderRepository.deleteById(orderId);
-    }
-
-    public void updateStatus(Order order){
-        orderRepository.save(order);
     }
 }

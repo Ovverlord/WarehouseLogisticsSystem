@@ -64,6 +64,6 @@ public class RegistrationController {
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.CHECKMAN));
         userRepository.save(user);
-        return "main";
+        return "redirect:/getUsers";
     }
 }

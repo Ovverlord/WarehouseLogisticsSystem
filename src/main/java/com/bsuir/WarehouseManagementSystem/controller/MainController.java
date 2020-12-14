@@ -19,12 +19,12 @@ public class MainController {
         String role = String.valueOf(auth.getAuthorities());
 
         if(role.equals("[ADMIN]")){
-            return "main";
+            return "redirect:/getUsers";
         }
         else if(role.equals("[CHECKMAN]")){
             return "redirect:/getProducts";
         }
 
-        return "userOrdersList";
+        return "redirect:/getOrders";
     }
 }

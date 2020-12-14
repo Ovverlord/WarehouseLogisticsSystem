@@ -18,5 +18,5 @@ public class BoxService {
         return boxRepository.findAll();
     }
 
-
+    public Box findById(Long boxId){return boxRepository.findById(boxId).orElseThrow();}
 }

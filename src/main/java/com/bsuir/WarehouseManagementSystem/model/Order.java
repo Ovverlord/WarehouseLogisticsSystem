@@ -1,6 +1,9 @@
 package com.bsuir.WarehouseManagementSystem.model;
 
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -16,10 +19,12 @@ public class Order {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Product product;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     public Order() {

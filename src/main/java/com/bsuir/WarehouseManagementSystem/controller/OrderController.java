@@ -1,6 +1,7 @@
 package com.bsuir.WarehouseManagementSystem.controller;
 
 
+import com.bsuir.WarehouseManagementSystem.model.Box;
 import com.bsuir.WarehouseManagementSystem.model.Order;
 import com.bsuir.WarehouseManagementSystem.model.User;
 import com.bsuir.WarehouseManagementSystem.repository.OrderRepository;
@@ -15,7 +16,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Controller
 
@@ -47,7 +50,7 @@ public class OrderController {
     }
 
     @PreAuthorize("hasAuthority('USER')")
-    @GetMapping("/orders")
+    @GetMapping("/getOrders")
     public String getOrders(@AuthenticationPrincipal User user,
                             Model model){
 
@@ -77,7 +80,7 @@ public class OrderController {
     @GetMapping("/orders/getAll")
     public String getAllOrder(Model model){
 
-        List<Order> ordersList = orderService.findAll();
+        List<Order> ordersList = orderService.getAll();
         model.addAttribute("orders",ordersList);
 
         return "orderList";
@@ -114,10 +117,28 @@ public class OrderController {
             productService.productsSelect(order.getProduct().getId(),order.getQuantity());
         }
 
-
         return "redirect:/orders/getAllUnchecked";
     }
 
+    @PostMapping("/findOrder")
+    public String findOrder(Model model,@RequestParam String filter){
+
+        if(filter.isEmpty()){
+            model.addAttribute("orders",orderService.getAll());
+        }
+        else{
+            try{
+                Order order = orderService.findById(Long.valueOf(filter));
+                model.addAttribute("orders",order);
+            }
+            catch (NoSuchElementException ex){
+                List<Order> emptyList = new ArrayList<>();
+                model.addAttribute("orders",emptyList);
+            }
+        }
+
+        return "orderList";
+    }
 
 //    @PreAuthorize("hasAuthority('USER')")
 //    @GetMapping("/order/{id}/edit")

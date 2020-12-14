@@ -4,35 +4,35 @@
 <head>
     <meta charset="UTF-8">
     <title>Products list</title>
+
+    <div th:insert="bootstrap/bootstrapCSS.html"></div>
 </head>
 <body>
-<div>
-    <form th:action="@{/logout}" method="post">
-        <input type="submit" value="Sign Out"/>
-    </form>
+<div th:insert="navbars/checkmanNav.html"></div>
+
+<div class="container mt-5">
+    <div>
+
+        <table class="table">
+            <thead class="thead-dark">
+            <tr>
+            <tr>
+                <th>Описание</th>
+                <th>quantity</th>
+            </tr>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <tr th:each="product : ${products}">
+                <td th:utext="${product.description}">Описание</td>
+                <td><a th:href="'/product/'+${product.id}+'/edit'">Редактировать</a></td>
+            </tr>
+            </tr>
+            </tbody>
+        </table>
+
+        <div th:insert="bootstrap/bootstrapJS.html"></div>
+    </div>
 </div>
 
-<div>
-    <table border="1">
-        <tr>
-            <th>description</th>
-            <th>quantity</th>
-        </tr>
-
-        <tr th:each="product : ${products}">
-            <td th:utext="${product.description}">Описание</td>
-            <td><a th:href="'/product/'+${product.id}+'/edit'">Редактировать</a></td>
-        </tr>
-    </table>
-
-
-    <a href="/addProduct">Обновить номенклатуру</a>
-
-    <a href="/acceptance">Приемка и размещение</a>
-
-    <a href="/boxes">Просмотр коробок</a>
-
-    <a href="/orders/getAll">Все заказы</a>
-
-    <a href="/orders/getAllUnchecked">Необработанные заказы</a>
-</div>

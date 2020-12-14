@@ -16,13 +16,12 @@ import java.util.Collections;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/user")
 public class UserController {
     @Autowired
     private UserService userService;
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping
+    @GetMapping("/getUsers")
     public String userList(Model model){
         model.addAttribute("users",userService.findAll());
         return "userList";
@@ -30,30 +29,30 @@ public class UserController {
 
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping("{user}/edit")
+    @GetMapping("/user/{user}/edit")
     public String userEditForm(@PathVariable User user,Model model){
         model.addAttribute("user",user);
         return "userEdit";
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @PostMapping("{id}/edit")
+    @PostMapping("/user/{id}/edit")
     public String editUser(@PathVariable(value = "id") Long id,
                            @ModelAttribute User user,
                            BindingResult bindingResult){
         user.setId(id);
         userService.saveUser(user);
-        return "redirect:/user";
+        return "redirect:/user/{id}/edit";
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @PostMapping("{id}/remove")
+    @PostMapping("/user/{id}/remove")
     public String removeUser(@PathVariable(value = "id") Long id){
         userService.removeUser(id);
-        return "redirect:/user";
+        return "redirect:/getUsers";
     }
 
-    @GetMapping("/update")
+    @GetMapping("/user/update")
     public String getProfile(Model model,
                              @AuthenticationPrincipal User user){
         model.addAttribute("user",user);
@@ -61,12 +60,27 @@ public class UserController {
         return "profile";
     }
 
-    @PostMapping("/update")
+    @PostMapping("/user/update")
     public String updateProfile(@AuthenticationPrincipal User user,
                                 @ModelAttribute User updatedUser,
                                 BindingResult bindingResult){
 
         userService.saveUser(updatedUser);
-        return "main";
+        return "profile";
+    }
+
+
+    @PostMapping("/findUser")
+    public String findOrder(Model model,@RequestParam String filter){
+
+        if(filter.isEmpty()){
+            model.addAttribute("users",userService.findAll());
+        }
+        else{
+            User user = userService.getUserByUsername(filter);
+            model.addAttribute("users",user);
+        }
+
+        return "userList";
     }
 }

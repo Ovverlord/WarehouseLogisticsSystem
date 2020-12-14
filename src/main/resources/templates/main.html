@@ -6,6 +6,9 @@
     <title>Main</title>
 </head>
 <body>
+<div th:insert="navbars/adminNav">
+
+</div>
 <div>
     <form th:action="@{/logout}" method="post">
         <input type="submit" value="Sign Out"/>
@@ -21,8 +24,5 @@
     </form>
 
 </div>
-
-<a href="/user">User List</a>
-<a href="/checkman/create">Create checkman</a>
 </body>
 </html>
