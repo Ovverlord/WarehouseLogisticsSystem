@@ -11,6 +11,9 @@
 <div th:insert="navbars/checkmanNav.html"></div>
 
 <div class="container mt-5">
+
+    <div class="alert alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>
+
     <div>
         <table class="table">
             <thead class="thead-dark">

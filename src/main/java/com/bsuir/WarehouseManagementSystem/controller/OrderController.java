@@ -14,10 +14,13 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 @Controller
@@ -108,13 +111,17 @@ public class OrderController {
 
     @PreAuthorize("hasAuthority('CHECKMAN')")
     @PostMapping("/order/confirm")
-    public String confirmOrder(@RequestParam(value="orderId") Long orderId){
+    public String confirmOrder(@RequestParam(value="orderId") Long orderId, RedirectAttributes redirectAttrs){
 
         Order order = orderService.getOrderById(orderId);
         if(order.getQuantity() <= productService.getProductsQuantity(order.getProduct().getId())){
             order.setStatus("Подтвержден");
             orderService.save(order);
             productService.productsSelect(order.getProduct().getId(),order.getQuantity());
+        }
+        else{
+            redirectAttrs.addFlashAttribute("error", "Не достаточно продуктов");
+            return "redirect:/orders/getAllUnchecked";
         }
 
         return "redirect:/orders/getAllUnchecked";

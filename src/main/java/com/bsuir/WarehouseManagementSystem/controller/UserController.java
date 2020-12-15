@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Collections;
 import java.util.Map;
@@ -19,6 +20,9 @@ import java.util.Map;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/getUsers")
@@ -63,9 +67,17 @@ public class UserController {
     @PostMapping("/user/update")
     public String updateProfile(@AuthenticationPrincipal User user,
                                 @ModelAttribute User updatedUser,
-                                BindingResult bindingResult){
+                                BindingResult bindingResult, RedirectAttributes redirectAttrs){
 
-        userService.saveUser(updatedUser);
+        User userFromDb = userRepository.findByUsername(user.getUsername());
+        if(userFromDb != null){
+            redirectAttrs.addFlashAttribute("error", "Пользователь существует");
+            return "redirect:/user/update";
+        }
+        else{
+            userService.saveUser(updatedUser);
+        }
+
         return "profile";
     }
 

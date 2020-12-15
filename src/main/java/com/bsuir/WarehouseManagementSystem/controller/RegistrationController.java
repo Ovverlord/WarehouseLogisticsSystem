@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Collections;
 import java.util.Map;
@@ -32,7 +33,7 @@ public class RegistrationController {
         User userFromDb = userRepository.findByUsername(user.getUsername());
 
         if(userFromDb != null){
-            model.put("message", "User exists!");
+            model.put("existedUsername", userFromDb);
             return "registration";
         }
 
@@ -53,11 +54,11 @@ public class RegistrationController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/checkman/create")
-    public String checkmanCreate(User user, Map<String,Object> model){
+    public String checkmanCreate(User user, RedirectAttributes redirectAttrs){
         User userFromDb = userRepository.findByUsername(user.getUsername());
 
         if(userFromDb != null){
-            model.put("message", "User exists!");
+            redirectAttrs.addFlashAttribute("error", "Пользователь существует");
             return "redirect:/checkman/create";
         }
 

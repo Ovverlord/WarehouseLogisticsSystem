@@ -9,13 +9,18 @@
 
 <div class="container mt-5">
     <body>
-    <div th:if="${param.error}">
-        Неверный логин или пароль
+    <div class="alert alert-danger notification" role="alert" th:if="${param.error}">
+        <p> Неверный логин или пароль</p>
+
     </div>
-    <div th:if="${param.logout}">
-        Вы вышли из аккаунта
+    <div class="alert alert-danger notification" role="alert" th:if="${param.logout}">
+        <p> Вы вышли из аккаунта</p>
+
     </div>
 
+    <div th:if="${existedUsername != null}" class="alert alert-danger notification" role="alert">
+        <p> Пользователь уже существует</p>
+    </div>
 
     <form th:action="@{/registration}" method="post">
         <div class="form-group">

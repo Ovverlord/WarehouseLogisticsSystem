@@ -9,10 +9,10 @@
 
 <div class="container mt-5">
     <body>
-    <div th:if="${param.error}">
+    <div class="alert alert-danger" role="alert" th:if="${param.error}">
         Неверный логин или пароль
     </div>
-    <div th:if="${param.logout}">
+    <div class="alert alert-danger" role="alert" th:if="${param.logout}">
         Вы вышли из аккаунта
     </div>
     <form th:action="@{/login}" method="post">
