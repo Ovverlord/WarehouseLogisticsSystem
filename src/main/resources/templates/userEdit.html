@@ -11,6 +11,8 @@
 <div class="container mt-5">
     <body>
 
+    <div class="alert alert-success" role="alert" th:text="${success}" th:if="${success}"></div>
+
     <form th:action="'/user/'+  ${user.id} +'/edit'" method="post">
 
         <div class="form-group">
@@ -33,14 +35,6 @@
 
         <button type="submit" class="btn btn-primary">Обновить</button>
     </form>
-
-
-    <div th:unless="${user.roles.equals('[ADMIN]')}" class="mt-3">
-        <form th:action="'/user/' + ${user.id} + '/remove'" method="post">
-            <button class="btn btn-danger" type="submit">Удалить</button>
-        </form>
-    </div>
-
 
     <div th:insert="bootstrap/bootstrapJS.html"></div>
 

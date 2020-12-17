@@ -43,9 +43,13 @@ public class UserController {
     @PostMapping("/user/{id}/edit")
     public String editUser(@PathVariable(value = "id") Long id,
                            @ModelAttribute User user,
-                           BindingResult bindingResult){
+                           BindingResult bindingResult,
+                           RedirectAttributes redirectAttrs){
         user.setId(id);
         userService.saveUser(user);
+
+        redirectAttrs.addFlashAttribute("success", "Профиль обновлен");
+
         return "redirect:/user/{id}/edit";
     }
 
@@ -65,20 +69,20 @@ public class UserController {
     }
 
     @PostMapping("/user/update")
-    public String updateProfile(@AuthenticationPrincipal User user,
-                                @ModelAttribute User updatedUser,
+    public String updateProfile(@ModelAttribute User updatedUser,
                                 BindingResult bindingResult, RedirectAttributes redirectAttrs){
 
-        User userFromDb = userRepository.findByUsername(user.getUsername());
+        User userFromDb = userRepository.findByUsername(updatedUser.getUsername());
         if(userFromDb != null){
             redirectAttrs.addFlashAttribute("error", "Пользователь существует");
             return "redirect:/user/update";
         }
         else{
+            redirectAttrs.addFlashAttribute("success", "Профиль обновлен");
             userService.saveUser(updatedUser);
         }
 
-        return "profile";
+        return "redirect:/user/update";
     }
 
 

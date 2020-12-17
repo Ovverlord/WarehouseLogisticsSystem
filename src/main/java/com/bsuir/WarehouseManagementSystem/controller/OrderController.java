@@ -45,11 +45,13 @@ public class OrderController {
     @PostMapping("/order/create")
     public String saveNewOrder(@AuthenticationPrincipal User user,
                             @RequestParam String selectProductId,
-                            @ModelAttribute Order order){
+                            @ModelAttribute Order order,
+                               RedirectAttributes redirectAttrs){
 
+        redirectAttrs.addFlashAttribute("success", "Заказ создан");
         orderService.saveNewOrder(order, user, Long.valueOf(selectProductId));
 
-        return "createOrder";
+        return "redirect:/order/create";
     }
 
     @PreAuthorize("hasAuthority('USER')")
@@ -65,7 +67,7 @@ public class OrderController {
 
 
     @PreAuthorize("hasAuthority('USER')")
-    @GetMapping("/order/{id}/remove")
+    @PostMapping("/order/{id}/remove")
     public String removeOrder(@AuthenticationPrincipal User user,
                               @PathVariable(value = "id") Long orderId){
 
@@ -75,7 +77,7 @@ public class OrderController {
             orderService.removeOrder(orderId);
         }
 
-        return "redirect:/orders";
+        return "redirect:/getOrders";
     }
 
 

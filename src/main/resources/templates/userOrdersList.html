@@ -35,7 +35,10 @@
                 <td th:utext="${order.status}"></td>
 
                 <div th:if="${order.status!='Подтвержден'}">
-                    <td><a th:href="'/order/' + ${order.id}+'/remove'">Удалить</a>
+                    <td>
+                        <form th:action="'/order/' + ${order.id}+'/remove'" method="post">
+                            <button type="submit" class="btn btn-danger">Удалить</button>
+                        </form>
                     </td>
                 </div>
             </tr>
